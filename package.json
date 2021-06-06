@@ -1,0 +1,22 @@
+{
+  "name": "mailconfirmation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "arpit sharma",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "fastify": "^3.17.0",
+    "fastify-express": "^0.3.2",
+    "jsonwebtoken": "^8.5.1",
+    "md5": "^2.3.0",
+    "mysql2": "^2.2.5",
+    "request": "^2.88.2",
+    "uuid4": "^2.0.2"
+  }
+}
