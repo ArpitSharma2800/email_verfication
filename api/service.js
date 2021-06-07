@@ -28,4 +28,15 @@ module.exports = {
             }
         );
     },
+    checkuser: (data, callBack) => {
+        pool.query(
+            `SELECT * FROM userdetails  WHERE emailAdd='${data.email}'`,
+            (error, results, fields) => {
+                if (error) {
+                    return callBack(error);
+                }
+                return callBack(null, results);
+            }
+        );
+    }
 };

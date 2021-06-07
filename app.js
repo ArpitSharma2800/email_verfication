@@ -6,7 +6,8 @@ const fastify = require('fastify')({
 
 const {
     createUser,
-    serverCheck
+    serverCheck,
+    verificationMail
 } = require("./api/router");
 
 
@@ -29,6 +30,7 @@ const {
 
 fastify.get("/check", serverCheck);
 fastify.post('/create', createUser);
+fastify.post('/verfication', verificationMail);
 
 // Run the server!
 const start = async () => {
