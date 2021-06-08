@@ -7,16 +7,16 @@ module.exports = {
         let transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: 'XXXX', // generated ethereal user
-                pass: 'XXXX', // generated ethereal password
+                user: process.env.EMAIL, // generated ethereal user
+                pass: process.env.EMAIL_PASS, // generated ethereal password
             },
         });
         // Step 2
         let mailOptions = {
-            from: 'XXXXX', // sender address
+            from: process.env.EMAIL, // sender address
             to: data.email, // list of receivers
             subject: "Email verfication",
-            html: htmlMail,
+            html: htmlFile(data),
         };
         transporter.sendMail(mailOptions, (err, data) => {
             if (err) {
@@ -26,33 +26,10 @@ module.exports = {
         });
     }
 }
-// async function main() {
-//     let testAccount = await nodemailer.createTestAccount();
-//     let transporter = nodemailer.createTransport({
-//         service: 'gmail',
-//         auth: {
-//             user: 'XXX', // generated ethereal user
-//             pass: 'XXXX', // generated ethereal password
-//         },
-//     });
-
-//     // send mail with defined transport object
-//     let info = await transporter.sendMail({
-//         from: 'XXX', // sender address
-//         to: "XXX", // list of receivers
-//         subject: "Email verfication",
-//         html: htmlMail, // html body
-//     });
-
-//     console.log("Message sent: %s", info.messageId);
-//     console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-// }
-
-// main().catch(console.error);
 
 
-
-var htmlMail = `<!doctype html>
+function htmlFile(data) {
+    return `<!doctype html>
 <html>
 
 <head>
@@ -424,7 +401,7 @@ var htmlMail = `<!doctype html>
                                 <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                                     <tr>
                                         <td>
-                                            <p>Hi debuu,</p>
+                                            <p>Hi ${data.name},</p>
                                             <p>For whole purpose of security we need to confirm email address</p>
                                             <table role="presentation" border="0" cellpadding="0" cellspacing="0"
                                                 class="btn btn-primary">
@@ -436,7 +413,7 @@ var htmlMail = `<!doctype html>
                                                                 <tbody>
                                                                     <tr>
                                                                         <td> <a href="https://www.google.co.in/"
-                                                                                target="_blank">Call To Action</a> </td>
+                                                                                target="_blank">${data.jwttoken}</a> </td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -476,3 +453,4 @@ var htmlMail = `<!doctype html>
 </body>
 
 </html>`
+}

@@ -35,7 +35,7 @@ fastify.post('/verfication', verificationMail);
 // Run the server!
 const start = async () => {
     try {
-        await fastify.listen(3000)
+        await fastify.listen(process.env.PORT)
         console.log("startd");
     } catch (err) {
         fastify.log.error(err)

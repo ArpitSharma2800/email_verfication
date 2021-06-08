@@ -2,6 +2,7 @@ const md5 = require('md5');
 const {
     v4: uuidv4
 } = require("uuid");
+const jwt = require("jsonwebtoken");
 const {
     create,
     checkuser
@@ -26,7 +27,7 @@ module.exports = {
         let pass = req.body.password;
         let lastLogin = null;
         let verfiedEmail = false;
-        let jwttoken = null;
+        let id = uuidv4()
         if (!name || !email || !pass) {
             return res
                 .code(403)
@@ -36,14 +37,21 @@ module.exports = {
                     message: "Pass all required fields"
                 });
         } else {
+            const token = jwt.sign({
+                username: name,
+                useremail: email,
+                userId: id
+            }, process.env.JWT, {
+                expiresIn: "10m",
+            });
             data = {
-                id: uuidv4(),
+                id: id,
                 name: name,
                 email: email,
                 pass: md5(pass),
                 lastLogin: null,
                 verfiedEmail: false,
-                jwttoken: null
+                jwttoken: token
             }
             sendVerficationMail(data, (err, results) => {
                 if (err) {
