@@ -1,29 +1,54 @@
 "use strict";
 const nodemailer = require("nodemailer");
 
-async function main() {
-    let testAccount = await nodemailer.createTestAccount();
-    let transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: 'XXX', // generated ethereal user
-            pass: 'XXXX', // generated ethereal password
-        },
-    });
-
-    // send mail with defined transport object
-    let info = await transporter.sendMail({
-        from: 'XXX', // sender address
-        to: "XXX", // list of receivers
-        subject: "Email verfication",
-        html: htmlMail, // html body
-    });
-
-    console.log("Message sent: %s", info.messageId);
-    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+module.exports = {
+    sendVerficationMail: async (data, callBack) => {
+        let testAccount = await nodemailer.createTestAccount();
+        let transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'XXXX', // generated ethereal user
+                pass: 'XXXX', // generated ethereal password
+            },
+        });
+        // Step 2
+        let mailOptions = {
+            from: 'XXXXX', // sender address
+            to: data.email, // list of receivers
+            subject: "Email verfication",
+            html: htmlMail,
+        };
+        transporter.sendMail(mailOptions, (err, data) => {
+            if (err) {
+                callBack(err)
+            }
+            return callBack(null, data)
+        });
+    }
 }
+// async function main() {
+//     let testAccount = await nodemailer.createTestAccount();
+//     let transporter = nodemailer.createTransport({
+//         service: 'gmail',
+//         auth: {
+//             user: 'XXX', // generated ethereal user
+//             pass: 'XXXX', // generated ethereal password
+//         },
+//     });
 
-main().catch(console.error);
+//     // send mail with defined transport object
+//     let info = await transporter.sendMail({
+//         from: 'XXX', // sender address
+//         to: "XXX", // list of receivers
+//         subject: "Email verfication",
+//         html: htmlMail, // html body
+//     });
+
+//     console.log("Message sent: %s", info.messageId);
+//     console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+// }
+
+// main().catch(console.error);
 
 
 
@@ -399,7 +424,7 @@ var htmlMail = `<!doctype html>
                                 <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                                     <tr>
                                         <td>
-                                            <p>Hi there,</p>
+                                            <p>Hi debuu,</p>
                                             <p>For whole purpose of security we need to confirm email address</p>
                                             <table role="presentation" border="0" cellpadding="0" cellspacing="0"
                                                 class="btn btn-primary">

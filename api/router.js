@@ -6,6 +6,9 @@ const {
     create,
     checkuser
 } = require('./service');
+const {
+    sendVerficationMail
+} = require('./controller');
 
 module.exports = {
     serverCheck: (req, res) => {
@@ -26,7 +29,7 @@ module.exports = {
         let jwttoken = null;
         if (!name || !email || !pass) {
             return res
-                .code(500)
+                .code(403)
                 .header('Content-Type', 'application/json; charset=utf-8')
                 .send({
                     success: false,
@@ -42,7 +45,7 @@ module.exports = {
                 verfiedEmail: false,
                 jwttoken: null
             }
-            create(data, (err, results) => {
+            sendVerficationMail(data, (err, results) => {
                 if (err) {
                     console.log(err);
                     return res
@@ -53,14 +56,27 @@ module.exports = {
                             message: err,
                         });
                 }
-                return res
-                    .code(200)
-                    .header('Content-Type', 'application/json; charset=utf-8')
-                    .send({
-                        success: true,
-                        message: "SUCCESS MESSAGE",
-                    });
+                create(data, (err, results) => {
+                    if (err) {
+                        console.log(err);
+                        return res
+                            .code(500)
+                            .header('Content-Type', 'application/json; charset=utf-8')
+                            .send({
+                                success: false,
+                                message: err,
+                            });
+                    }
+                    return res
+                        .code(200)
+                        .header('Content-Type', 'application/json; charset=utf-8')
+                        .send({
+                            success: true,
+                            message: "SUCCESS MESSAGE",
+                        });
+                });
             });
+
         }
 
     },
@@ -115,14 +131,25 @@ module.exports = {
                             message: "User already verfied",
                         });
                 } else {
-
-                    return res
-                        .code(200)
-                        .header('Content-Type', 'application/json; charset=utf-8')
-                        .send({
-                            success: true,
-                            message: results,
-                        });
+                    sendVerficationMail(data, (err, results) => {
+                        if (err) {
+                            console.log(err);
+                            return res
+                                .code(500)
+                                .header('Content-Type', 'application/json; charset=utf-8')
+                                .send({
+                                    success: false,
+                                    message: err,
+                                });
+                        }
+                        return res
+                            .code(200)
+                            .header('Content-Type', 'application/json; charset=utf-8')
+                            .send({
+                                success: true,
+                                message: "SUCCESS MESSAGE",
+                            });
+                    });
                 }
 
             });
